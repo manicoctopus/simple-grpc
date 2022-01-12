@@ -1,0 +1,43 @@
+version: "3"
+    
+tasks:
+    build:
+        desc: Build the app
+        cmds:
+        - go build -o bin/server cmd/server/main.go
+        - go build -o bin/client cmd/client/main.go
+
+    generate:
+        desc: Generate Go code from protobuf
+        cmds:
+        - protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative proto/greeter.proto
+
+    lib:
+        desc: Install libraries
+        cmds:
+        - go get google.golang.org/protobuf/cmd/protoc-gen-go google.golang.org/grpc/cmd/protoc-gen-go-grpc
+
+    server:
+        desc: Run server
+        cmds:
+        - go run cmd/server/main.go
+
+    s:
+        desc: Run server
+        cmds:
+        - ./bin/server
+
+    client:
+        desc: Run client
+        cmds:
+        - go run cmd/client/main.go "Bart"
+
+    c:
+        desc: Run client
+        cmds:
+        - ./bin/client "Bart"
+
+    clean:
+        desc: Remove generated files
+        cmds:
+        - rm proto/*.go
